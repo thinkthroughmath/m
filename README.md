@@ -1,6 +1,8 @@
 M.RB
 ----
 
+***Forked in order to incorporate [Minitest 5 compatibility](https://github.com/qrush/m/pull/43)***
+
 `m` stands for metal, a better test/unit test runner that can run tests by line number.
 
     ________________________________________________________________________________
