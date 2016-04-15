@@ -38,7 +38,7 @@ If you’re using Bundler, you’ll need to include it in your Gemfile. Toss it 
 
 ``` ruby
 group :test do
-  gem 'm', '~> 1.3.1'
+  gem 'm', '~> 1.4.2'
 end
 ```
 
@@ -48,11 +48,11 @@ Developing a RubyGem? Add m as a development dependency.
 ``` ruby
 Gem::Specification.new do |gem|
   # ...
-  gem.add_development_dependency "m", "~> 1.3.1"
+  gem.add_development_dependency "m", "~> 1.4.2"
 end
 ```
 
-m works on Ruby 1.9+ only.
+m works on Ruby 2.0+ only.
 
 
 USAGE
@@ -116,6 +116,18 @@ Want to run the whole test? Just leave off the line number.
 
     1 tests, 2 assertions, 0 failures, 0 errors, 0 skips
 
+If you want to run all the tests in a directory as well as its subdirectories, use the `-r` flag:
+
+    $ m -r test/models
+    "Searching provided directory for tests recursively"
+    Run options:
+
+    ..
+
+    Finished in 3.459902s, 45.0880 runs/s, 87.5747 assertions/s.
+
+    156 tests, 303 assertions, 0 failures, 0 errors, 13 skips
+
 
 SUPPORT
 =======
@@ -130,16 +142,21 @@ SUPPORT
 CONTRIBUTING
 ============
 
-You can run the tests for minitest 4 with:
+You can run all the tests with:
 
-    rake appraisal:minitest4 test
+    bundle exec rake tests
+
+You can also run tests selectively. For minitest 4 run:
+
+    appraisal minitest4 rake test
 
 and the ones for minitest 5 with:
 
-    rake appraisal:minitest5 test TEST=test/minitest_5_test.rb
+    appraisal minitest5 rake test TEST=test/minitest_5_test.rb
 
-In the case of minitest 5 the whole suite will fail due to incompatibilities
-with ruby (at least until 2.1.1).
+In the case of minitest 5, we have to specify the test to run, because running
+the whole suite will fail due to incompatibilities with ruby (at least until
+2.1.1).
 
 
 LICENSE

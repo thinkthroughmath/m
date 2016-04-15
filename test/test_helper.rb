@@ -1,13 +1,14 @@
-if ENV['TRAVIS']
+begin
   require 'coveralls'
-
-  Coveralls.wear!
+  Coveralls.wear_merged!
+rescue LoadError
+  warn "gem 'coveralls' not available, proceeding without it"
 end
 
 module Testable
   def m(arguments)
     Dir.chdir("test") do
-      `ruby -I../lib -I. ../bin/m #{arguments} 2>&1`.strip
+      `ruby -I../lib  -I. ../bin/m #{arguments} 2>&1`.strip
     end
   end
 
@@ -17,17 +18,36 @@ module Testable
   end
 end
 
-require './lib/m'
-require 'minitest/autorun'
-if M::Frameworks.minitest5?
+require 'm'
+
+def try_loading(gem)
+  begin
+    require gem
+  rescue LoadError
+    return false
+  end
+end
+
+try_loading('test-unit') ||
+try_loading('minitest/autorun') ||
+try_loading('test/unit')
+
+if M::Frameworks.test_unit?
+  begin
+    require 'test-unit'
+  rescue LoadError
+    require('active_support/test_case')
+  end
+
+  class MTest < Test::Unit::TestCase
+    include ::Testable
+  end
+elsif M::Frameworks.minitest5?
   class MTest < Minitest::Test
     include ::Testable
   end
 else
-  require 'test/unit'
-  require 'active_support/test_case'
-
-  class MTest < Test::Unit::TestCase
+  class MTest < MiniTest::Unit::TestCase
     include ::Testable
   end
 end

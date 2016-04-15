@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+
 if M::Frameworks.minitest5?
   class Meme
     def i_can_has_cheezburger?
@@ -10,7 +11,6 @@ if M::Frameworks.minitest5?
     end
   end
 
-
   class TestMeme < Minitest::Test
     def setup
       @meme = Meme.new
@@ -21,15 +21,16 @@ if M::Frameworks.minitest5?
     end
 
     def test_that_it_will_not_blend
-      refute_match /^maybe/i, @meme.will_it_blend?
-      refute_match /^no/i, @meme.will_it_blend?
-      refute_match /^lolz/i, @meme.will_it_blend?
+      refute_match(/^maybe/i, @meme.will_it_blend?)
+      refute_match(/^no/i, @meme.will_it_blend?)
+      refute_match(/^lolz/i, @meme.will_it_blend?)
     end
 
     def test_that_kitty_can_eat_two_time
       assert_equal "OHAI!", @meme.i_can_has_cheezburger?
       assert_equal "OHAI!", @meme.i_can_has_cheezburger?
     end
-
   end
+
+  Minitest.after_run { p "ran after run block" }
 end
